@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon  -r dotenv/config --experimental-json-modules  src/index.js"
   },
   "keywords": [
     "nodejs"
@@ -12,6 +13,14 @@
   "author": "tayyab",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.3.3",
     "nodemon": "^3.1.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "prettier": "^3.2.5"
   }
 }
