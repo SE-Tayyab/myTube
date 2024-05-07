@@ -65,9 +65,9 @@ userSchema.methods.generateAccessToken = function () {
       username: this.username,
       fullname: this.fullname,
     },
-    "TAYYAB SATTAR ARAIN",
+    process.env.ACCESS_TOKEN_SECRET,
     {
-      expiresIn: "1d",
+      expiresIn: ACCESS_TOKEN_EXPIRY,
     }
   );
 };
@@ -77,9 +77,9 @@ userSchema.methods.generateRefreshToken = function () {
     {
       _id: this._id,
     },
-    "TAYYAB SATTAR ARAIN",
+    process.env.ACCESS_TOKEN_REFRESH,
     {
-      expiresIn: "1d",
+      expiresIn: REFRESH_TOKEN_EXPIRY,
     }
   );
 };

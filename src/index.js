@@ -1,32 +1,22 @@
+// index.js
 import dotenv from "dotenv";
 import connectDb from "./db/index.js";
-import { app } from "./app.js";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import express from "express";
+import { app } from "./app.js"; // Import app from app.js
 
 dotenv.config({
-  path: "../env",
+  path: "./.env",
 });
-
-app.use(cors());
-app.use(express.json({ limit: "16kb" }));
-app.use(express.urlencoded({ extended: true, limit: "16kb" }));
-app.use(express.static("public"));
-app.use(cookieParser());
 
 // Connect to MongoDB database
 connectDb()
   .then(() => {
-    console.log("Connected to MongoDB");
+    console.log("Connected to MongoDB on Port", process.env.PORT);
 
-    console.log(process.env.PORT, "lol");
-    const PORT = process.env.PORT || 3000;
+    const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      console.log("Server is running on port", PORT);
     });
   })
   .catch((err) => {
-    // Error connecting to the database
-    console.error("Error connecting to MongoDB:", err);
+    console.error("Error listen to app:", err);
   });
