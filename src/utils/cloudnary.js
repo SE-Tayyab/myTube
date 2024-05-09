@@ -11,7 +11,7 @@ const uploadOnCloudinary = async (localFilePath) => {
   if (!localFilePath) return null;
   try {
     //upload the file on cloudinary
-    const response = await cloudinary.oploader.upload(localFilePath, {
+    const response = await cloudinary.uploader.upload(localFilePath, {
       resourse_type: "auto",
     });
     //File has been uploaded successfully
@@ -21,6 +21,7 @@ const uploadOnCloudinary = async (localFilePath) => {
   } catch (e) {
     //remove the locally saved template file as the uplead operation got failed
     fs.unlinkSync(localFilePath);
+    console.log(e, "erroooooooooooooooooooooooooor");
   }
 };
 

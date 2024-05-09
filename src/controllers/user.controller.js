@@ -5,11 +5,11 @@ import { uploadOnCloudinary } from "../utils/cloudnary.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 
 const accessTokenAndRefreshTokenGenerator = async (userId) => {
-  const user = await User.findById(userId);
   try {
+    const user = await User.findById(userId);
+    console.log(user);
     const accessToken = await user.generateAccessToken();
     const refreshToken = await user.generateRefreshToken();
-
     user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
 
@@ -17,11 +17,12 @@ const accessTokenAndRefreshTokenGenerator = async (userId) => {
   } catch (e) {
     throw new apiError(
       500,
-      "someThing went wrong white generating refrest token and access token"
+      e.message ||
+        "someThing went wrong white generating refresh token and access token"
     );
   }
 };
-
+// registerUser *********************************************
 const registerUser = asyncHandler(async (req, res) => {
   // validation of data check if any field is empty:
   const { username, fullname, email, password } = req.body;
@@ -84,12 +85,16 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, createdUser, "User registered successfully"));
 });
 
+// loginUser *********************************************
 const loginUser = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
 
-  if (!username || !email) {
+  if (!username && !email) {
     throw new apiError(400, "username or email is required :");
   }
+  // if (!(username || email)) {
+  //   throw new apiError(400, "username or email is required :");
+  // }
 
   const user = await User.findOne({
     $or: [{ email }, { password }],
@@ -153,8 +158,8 @@ const logOutUser = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .clearCookies("accessToken", options)
-    .clearCookies("refreshToken", options)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, {}, "User logged Out successfully"));
 });
 
