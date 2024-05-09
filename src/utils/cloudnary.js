@@ -1,4 +1,4 @@
-import { vs as cloudinary } from "vs";
+import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 
 cloudinary.config({
@@ -8,16 +8,20 @@ cloudinary.config({
 });
 
 const uploadOnCloudinary = async (localFilePath) => {
+  if (!localFilePath) return null;
   try {
     //upload the file on cloudinary
     const response = await cloudinary.oploader.upload(localFilePath, {
       resourse_type: "auto",
     });
     //File has been uploaded successfully
-    console.log("File in uploaded on cloudinary ", response.url);
+    console.log("File is uploaded on cloudinary ", response.url);
+    fs.unlinkSync(localFilePath);
     return response;
   } catch (e) {
     //remove the locally saved template file as the uplead operation got failed
     fs.unlinkSync(localFilePath);
   }
 };
+
+export { uploadOnCloudinary };
